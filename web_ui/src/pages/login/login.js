@@ -4,7 +4,7 @@ import "./login.scss";
 import { Button, Form } from "react-bootstrap";
 import pick from "lodash/pick";
 import {connect} from "react-redux";
-import {create_user, getUsers} from "../../api";
+import {api_login, create_user} from "../../api";
 
 function Login(props) {
   const [create, setCreate] = useState(false);
@@ -17,8 +17,8 @@ function Login(props) {
     setUser(u1);
   }
 
-  const loginApi = (name, password) => {
-    
+  const loginApi = (email, password) => {
+    api_login(email, password);
   }
 
   const handleLoginSubmit = (e) => {
@@ -30,7 +30,8 @@ function Login(props) {
     } else {
       e.preventDefault();
       e.stopPropagation();
-      loginApi();
+      let data = pick(user, ['email', 'password'])
+      loginApi(data.email, data.password);
     }
     setValidated(true);
   };
@@ -38,7 +39,7 @@ function Login(props) {
   const createApi = () => {
     let data = pick(user, ["name", "email", "password"]);
     create_user(data).then(() => {
-      getUsers();
+      loginApi(data.email, data.password);
     })
   }
 

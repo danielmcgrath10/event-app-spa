@@ -12,6 +12,16 @@ defmodule EventAppWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
+    user = Users.get_user_by_email(user_params["email"])
+
+    if user do
+      conn
+      |> put_resp_header(
+        "content-type",
+        "application/json; charset=UTF-8")
+      |> send_resp(:error, Jason.encode!(%{error: "Fail"}))
+    end
+
     IO.inspect user_params
     with {:ok, %User{} = user} <- Users.create_user(user_params) do
       conn

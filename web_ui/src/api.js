@@ -32,14 +32,15 @@ export const getUsers = async () => {
 }
 
 export const create_user = async (data) => {
-    api_post("/users", data).then((data) => {
+    api_post("/users", {"user": data}).then((data) => {
         console.log("new user", data);
     })
 }
 
 //Taken from the notes
-export function api_login(name, email, password) {
-    api_post("/session", {name, email, password}.then((data) => {
+export function api_login(email, password) {
+    api_post("/session", {"email": email, "password": password})
+    .then((data) => {
         console.log("login resp", data);
         if(data.session){
             let action = {
@@ -54,7 +55,7 @@ export function api_login(name, email, password) {
             }
             store.dispatch(action);
         }
-    }))
+    })
 }
 
 export function load_defaults() {

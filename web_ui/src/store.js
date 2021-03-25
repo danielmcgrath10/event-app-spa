@@ -40,7 +40,7 @@ function restore_session() {
     }
 }
 
-function session(state=null, action){
+function session(state=restore_session(), action){
     switch (action.type) {
         case 'session/set':
             save_session(action.data);

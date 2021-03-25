@@ -2,13 +2,13 @@
 defmodule EventAppWeb.SessionController do
   use EventAppWeb, :controller
 
-  def create(conn, %{"name" => name, "password" => password}) do
-    user = EventApp.Users.authenticate(name, password)
+  def create(conn, %{"email" => email, "password" => password}) do
+    user = EventApp.Users.authenticate(email, password)
 
     if user do
       sess = %{
         user_id: user.id,
-        name: user.name,
+        email: user.email,
         token: Phoenix.Token.sign(conn, "user_id", user.id)
       }
       conn
