@@ -14,7 +14,6 @@ defmodule EventAppWeb.UserView do
     %{id: user.id,
       name: user.name,
       email: user.email,
-      password_hash: user.password_hash,
-      profile_photo: user.profile_photo}
+      password_hash: user.password_hash}
   end
 end

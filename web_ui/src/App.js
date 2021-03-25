@@ -9,7 +9,7 @@ import Users from './pages/users/users';
 import Login from './pages/login/login';
 import { connect } from 'react-redux';
 
-function App(props) {
+function App({error}) {
   let [curUser, setCurUser] = useState(null);
   // Taken from the notes 
   let error_row = null;

@@ -23,7 +23,7 @@ defmodule EventAppWeb.Router do
   scope "/api/v1", EventAppWeb do
     pipe_through :api
 
-    resources "/users", UserController
+    resources "/users", UserController, except: [:new, :edit]
     resources "/events", EventController
     resources "/comments", CommentController
     resources "/invites", InviteController

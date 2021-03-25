@@ -6,7 +6,6 @@ defmodule EventApp.Users.User do
     field :email, :string
     field :name, :string
     field :password_hash, :string
-    field :profile_photo, :string
 
     has_many :events, EventApp.Events.Event
     has_many :comments, EventApp.Comments.Comment
@@ -18,7 +17,22 @@ defmodule EventApp.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :password_hash, :profile_photo])
-    |> validate_required([:name, :email, :password_hash, :profile_photo])
+    |> cast(attrs, [:name, :email, :password_hash])
+    |> add_password_hash(attrs["password"])
+    |> validate_required([:name, :email, :password_hash])
+  end
+
+  def add_password_hash(cset, nil) do
+    cset
+  end
+
+  def add_password_hash(cset, password) do
+    change(cset, Argon2.add_hash(password))
+  end
+
+  def validate_password(_x) do
+    # Password more than 8 chars.
+    # PW not in common directory
+    true
   end
 end

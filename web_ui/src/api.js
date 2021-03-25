@@ -2,9 +2,25 @@
 import store from "./store";
 
 async function api_get(path) {
-    let text = await fetch("http://localhost:4000/api/v1/" + path, {});
+    let text = await fetch("http://localhost:4000/api/v1" + path, {});
     let res = await text.json();
     return res.data;
+}
+
+async function api_post(path, data) {
+    let opts = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+    };
+    console.log(path, data, opts)
+    let text = await fetch(
+        "http://localhost:4000/api/v1" + path, 
+        opts
+    );
+    return await text.json();
 }
 
 // Inspired by the notes
@@ -15,9 +31,15 @@ export const getUsers = async () => {
     }))
 }
 
+export const create_user = async (data) => {
+    api_post("/users", data).then((data) => {
+        console.log("new user", data);
+    })
+}
+
 //Taken from the notes
-export function api_login(name, password) {
-    api_post("/session", {name, password}.then((data) => {
+export function api_login(name, email, password) {
+    api_post("/session", {name, email, password}.then((data) => {
         console.log("login resp", data);
         if(data.session){
             let action = {
@@ -36,5 +58,5 @@ export function api_login(name, password) {
 }
 
 export function load_defaults() {
-    getUsers();
+    getUsers();    
 }
