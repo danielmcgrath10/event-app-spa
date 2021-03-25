@@ -1,24 +1,48 @@
+import React, {Suspense, useState} from 'react';
 import logo from './logo.svg';
 import './App.scss';
+import {Route, Switch, Redirect} from "react-router-dom";
+import EventFeed from './pages/event_feed/event-feed';
+import Navbar from './components/navbar/navbar';
+import { Container } from 'react-bootstrap';
+import Users from './pages/users/users';
+import Login from './pages/login/login';
 
-function App() {
+function App(props) {
+  let [curUser, setCurUser] = useState(null);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container fluid className="App">
+      {
+        curUser ?
+          <>
+            <Navbar/>
+            <Suspense>
+              <Switch>
+                {/* <Route
+                  path={'/login'}
+                /> */}
+                <Route
+                  path={'/home'}
+                  render={(props) => (
+                    <EventFeed {...props}/>
+                  )}
+                />
+                <Route
+                  path={'/users'}
+                  render={(props) => (
+                    <Users {...props}/>
+                  )}
+                />
+                <Route exact path={"/"}>
+                  <Redirect to={"/home"} />
+                </Route>
+              </Switch>
+            </Suspense>
+          </>
+        :
+          <Login/>
+      }
+    </Container>
   );
 }
 

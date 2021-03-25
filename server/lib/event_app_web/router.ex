@@ -27,6 +27,7 @@ defmodule EventAppWeb.Router do
     resources "/events", EventController
     resources "/comments", CommentController
     resources "/invites", InviteController
+    resources "/session", SessionController, only: [:create]
   end
 
   # Enables LiveDashboard only for development
