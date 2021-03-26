@@ -9,17 +9,13 @@ export default function Users({users}){
 
     const popUsers = () => {
         return(
-            users.map(user => 
-                <tr>
+            users.map((user, index) => 
+                <tr key={index}>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
-                    <td><span>Show</span></td>
-                    {/* <td></td>
-                    <td></td> */}
-                    <td><span>Edit</span></td>
-                    <td><span>Delete</span></td>
-                    {/* <td></td>
-                    <td></td> */}
+                    <td></td>
+                    <td></td>
+                    <td><span><a href={`/users/${user.id}`}>Show</a></span></td>
                 </tr>
             )
         )

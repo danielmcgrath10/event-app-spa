@@ -36,11 +36,7 @@ export default function EventFeed({events, session}) {
 
     const update = (field, ev) => {
         let u1 = Object.assign({}, event);
-        if(ev === "date") {
-            u1[field] = ev;
-        } else {
-            u1[field] = ev.target.value;
-        }
+        u1[field] = ev.target.value;
         setEvent(u1);
     }
 

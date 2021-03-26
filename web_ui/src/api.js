@@ -15,9 +15,24 @@ async function api_post(path, data) {
         },
         body: JSON.stringify(data),
     };
-    console.log(path, data, opts)
     let text = await fetch(
         "http://localhost:4000/api/v1" + path, 
+        opts
+    );
+    return await text.json();
+}
+
+async function api_patch(id, path, data) {
+    let opts = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+    };
+    console.log(opts)
+    let text = await fetch (
+        "http://localhost:4000/api/v1" + path + "/" + id, 
         opts
     );
     return await text.json();
@@ -69,6 +84,12 @@ export const create_event = async (data, session) => {
     api_post("/events", {"event": data, "session": session}).then((data) => {
         console.log("new event", data);
         get_events();
+    })
+}
+
+export const update_user = async (id, data, session) => {
+    api_patch(id, "/users",{"user": data, "session": session}).then(() => {
+        getUsers();
     })
 }
 

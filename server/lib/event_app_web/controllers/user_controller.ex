@@ -19,7 +19,7 @@ defmodule EventAppWeb.UserController do
       |> put_resp_header(
         "content-type",
         "application/json; charset=UTF-8")
-      |> send_resp(:error, Jason.encode!(%{error: "Fail"}))
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Fail"}))
     end
 
     IO.inspect user_params
@@ -36,11 +36,20 @@ defmodule EventAppWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Users.get_user!(id)
+  def update(conn, %{"id" => id, "user" => user_params, "session" => session}) do
+    {idVal, ""} = Integer.parse(id)
+    if idVal != session["user_id"] do
+      conn
+      |> put_resp_header(
+        "content-type",
+        "application/json; charset=UTF-8")
+      |> send_resp(:unauthorized, Jason.encode!(%{error: "Fail"}))
+    else
+      user = Users.get_user!(id)
 
-    with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
-      render(conn, "show.json", user: user)
+      with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
+        render(conn, "show.json", user: user)
+      end
     end
   end
 

@@ -7,6 +7,7 @@ import { Alert, Col, Container, Row } from "react-bootstrap";
 import Users from "./pages/users/users";
 import Login from "./pages/login/login";
 import { connect } from "react-redux";
+import UserView from "./pages/user/user";
 
 function App({ error, session, users, events }) {
   // Taken from the notes
@@ -34,11 +35,11 @@ function App({ error, session, users, events }) {
                 path={"/home"}
                 render={(props) => <EventFeed events={events} session={session}/>}
               />
+              <Route exact path={"/users/:id"}>
+                <UserView users={users} session={session}/>
+              </Route>
               <Route exact path={"/users"}>
                 <Users users={users}/>
-              </Route>
-              <Route exact path={"/users/:id"}>
-                < users={users}/>
               </Route>
               <Route exact path={"/"}>
                 <Redirect to={"/home"} />
