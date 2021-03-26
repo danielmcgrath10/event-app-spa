@@ -6,7 +6,7 @@ defmodule EventApp.Events.Event do
     field :body, :string
     field :date, :string
     field :name, :string
-    belongs_to :user_id, EventApp.Users.User
+    belongs_to :user, EventApp.Users.User
 
     has_many :comments, EventApp.Comments.Comment
     has_many :invites, EventApp.Invites.Invite

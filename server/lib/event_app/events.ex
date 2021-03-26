@@ -19,6 +19,9 @@ defmodule EventApp.Events do
   """
   def list_events do
     Repo.all(Event)
+    |> Repo.preload(:user)
+    |> Repo.preload(:comments)
+    |> Repo.preload(:invites)
   end
 
   @doc """
@@ -36,6 +39,8 @@ defmodule EventApp.Events do
 
   """
   def get_event!(id), do: Repo.get!(Event, id)
+  |>Repo.preload(:invites)
+  |>Repo.preload(:user)
 
   @doc """
   Creates a event.

@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 
 function Navbar({session}) {
-    let pages = ["home", "users", "invites"];
+    let pages = ["home", "users"];
     const logout = (e) => {
         e.preventDefault();
         store.dispatch({type: 'session/clear'})

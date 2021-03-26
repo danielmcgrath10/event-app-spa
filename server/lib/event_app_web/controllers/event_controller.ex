@@ -4,9 +4,6 @@ defmodule EventAppWeb.EventController do
   alias EventApp.Events
   alias EventApp.Events.Event
 
-  plug Plugs.RequireAuth when action
-    in [:create]
-
   action_fallback EventAppWeb.FallbackController
 
   def index(conn, _params) do
@@ -14,11 +11,9 @@ defmodule EventAppWeb.EventController do
     render(conn, "index.json", events: events)
   end
 
-  def create(conn, %{"event" => event_params}) do
-    user = conn.assigns[:current_user]
-
+  def create(conn, %{"event" => event_params, "session" => session}) do
     event_params = event_params
-    |> Map.put("user_id", user.id)
+    |> Map.put("user_id", session["user_id"])
 
     with {:ok, %Event{} = event} <- Events.create_event(event_params) do
       conn

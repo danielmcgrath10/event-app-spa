@@ -4,7 +4,7 @@ import "./login.scss";
 import { Button, Form } from "react-bootstrap";
 import pick from "lodash/pick";
 import {connect} from "react-redux";
-import {api_login, create_user} from "../../api";
+import {api_login, create_user, getUsers, get_events} from "../../api";
 
 function Login(props) {
   const [create, setCreate] = useState(false);
@@ -19,6 +19,8 @@ function Login(props) {
 
   const loginApi = (email, password) => {
     api_login(email, password);
+    get_events();
+    getUsers();
   }
 
   const handleLoginSubmit = (e) => {

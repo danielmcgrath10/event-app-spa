@@ -10,6 +10,15 @@ function users(state=[], action){
     }
 }
 
+function events(state=[], action){
+    switch(action.type){
+        case "events/set":
+            return action.data
+        default:
+            return state
+    }
+}
+
 function user_form(state=[], action){
     switch (action.type) {
         case 'user_form/set':
@@ -67,7 +76,7 @@ function error(state = null, action){
 function root_reducer(state, action) {
     console.log("root_reducer", state, action);
     let reducer = combineReducers({
-        users, user_form, error, session
+        users, user_form, error, session, events
     });
     return reducer(state, action);
 }

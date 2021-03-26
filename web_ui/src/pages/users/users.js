@@ -1,20 +1,30 @@
-import React, { useEffect, useState } from "react";
-import {connect} from "react-redux";
+import React from "react";
+import { getUsers } from "../../api";
 
-export default function Users(props){
-    let [users, setUsers] = useState(null);
+export default function Users({users}){
+    if(!users){
+        console.log(users)
+        getUsers();
+    }
 
-    const getUsers = ({users, user_form, dispatch}) => {
-        
+    const popUsers = () => {
+        return(
+            users.map(user => 
+                <tr>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td><span>Show</span></td>
+                    {/* <td></td>
+                    <td></td> */}
+                    <td><span>Edit</span></td>
+                    <td><span>Delete</span></td>
+                    {/* <td></td>
+                    <td></td> */}
+                </tr>
+            )
+        )
     }
     
-    useEffect(() => {
-        if(!users){
-            let list = getUsers();
-            setUsers(list);
-        }
-    }, [])
-
     return(
         <div>
             <div style={{marginBottom: "20px"}}>
@@ -33,25 +43,7 @@ export default function Users(props){
                     </tr>
                 </thead>
                 <tbody>
-                {/* <%= for user <- @users do %>
-                    <tr>
-                    <td><%= user.name %></td>
-                    <%= if have_current_user?(@conn) do %>
-                        <td><%= user.email %></td>
-                        <td><span><%= link "Show", to: Routes.user_path(@conn, :show, user) %></span></td>
-                    <%else %>
-                        <td></td>
-                        <td></td>
-                    <%end %>
-                    <%= if current_user_id?(@conn, user.id) do %>
-                        <td><span><%= link "Edit", to: Routes.user_path(@conn, :edit, user) %></span></td>
-                        <td><span><%= link "Delete", to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"] %></span></td>
-                    <%else %>
-                        <td></td>
-                        <td></td>
-                    <%end %>
-                    </tr>
-                <% end %> */}
+                    {popUsers()}
                 </tbody>
             </table>
         </div>

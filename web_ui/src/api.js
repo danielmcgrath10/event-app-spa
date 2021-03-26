@@ -58,6 +58,21 @@ export function api_login(email, password) {
     })
 }
 
+export const get_events = async () => {
+    api_get("/events").then((data) => store.dispatch({
+        type: "events/set",
+        data: data
+    }))
+}
+
+export const create_event = async (data, session) => {
+    api_post("/events", {"event": data, "session": session}).then((data) => {
+        console.log("new event", data);
+        get_events();
+    })
+}
+
 export function load_defaults() {
-    getUsers();    
+    getUsers();   
+    get_events(); 
 }

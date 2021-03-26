@@ -1,0 +1,23 @@
+.act-feed-header{
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+
+.act-feed-new{
+    height: 40px;
+}
+
+.date-picker-group{
+    display: flex; 
+    flex-direction: column;
+}
+
+.date-picker{
+    border-width: 1px;
+    border-radius: 3px;
+    border-color: lightgrey;
+    box-shadow: none;
+    background: none;
+    color: grey;
+}

@@ -8,7 +8,7 @@ import Users from "./pages/users/users";
 import Login from "./pages/login/login";
 import { connect } from "react-redux";
 
-function App({ error, session }) {
+function App({ error, session, users, events }) {
   // Taken from the notes
   let error_row = null;
   if (error) {
@@ -32,9 +32,14 @@ function App({ error, session }) {
                 /> */}
               <Route
                 path={"/home"}
-                render={(props) => <EventFeed {...props} />}
+                render={(props) => <EventFeed events={events} session={session}/>}
               />
-              <Route path={"/users"} render={(props) => <Users {...props} />} />
+              <Route exact path={"/users"}>
+                <Users users={users}/>
+              </Route>
+              <Route exact path={"/users/:id"}>
+                < users={users}/>
+              </Route>
               <Route exact path={"/"}>
                 <Redirect to={"/home"} />
               </Route>
@@ -47,4 +52,4 @@ function App({ error, session }) {
   );
 }
 
-export default connect(({ error, session }) => ({ error, session }))(App);
+export default connect(({ error, session, users, events }) => ({ error, session, users, events }))(App);
