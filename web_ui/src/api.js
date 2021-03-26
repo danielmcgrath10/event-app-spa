@@ -133,6 +133,12 @@ export const upd_invite = async (id, val) => {
     })
 }
 
+export const update_event = async (id, data) => {
+    api_patch(id, "/events", {"event": data}).then(() => {
+        get_events();
+    })
+}
+
 export function load_defaults() {
     getUsers();   
     get_events(); 

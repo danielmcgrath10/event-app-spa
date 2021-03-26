@@ -1,8 +1,8 @@
-import _ from "lodash";
-import React from "react";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
+import _, {pick} from "lodash";
+import React, {useState, useEffect} from "react";
+import { Button, Card, Col, Row, Table, Form, Modal } from "react-bootstrap";
 import { useParams } from "react-router";
-import { del_comment, del_invite, upd_invite } from "../../api";
+import { del_comment, del_invite, upd_invite, update_event } from "../../api";
 import Comment from "../../components/comment/comment";
 import Invite from "../../components/invite/invite";
 import "./event.scss";
@@ -10,7 +10,16 @@ import "./event.scss";
 export default function EventView({ events, session }) {
   let { id } = useParams();
   let event = _.find(events, ["id", _.toNumber(id)]);
-  console.log(event);
+  const [eventModal, setEventModal] = useState(false);
+  const [eventEditValidated, setEventEditVal] = useState(false);
+  const [eventEdit, setEvent] = useState({name: "", date: "", body: ""});
+
+  useEffect(() => {
+    if(event) {
+        setEvent({name: event.name , date:event.date, body: event.body})
+    }
+}, [event])
+
 
   const handleDelCom = (id) => {
     del_comment(id);
@@ -25,6 +34,37 @@ export default function EventView({ events, session }) {
     console.log(invite_id, val)
     upd_invite(invite_id, val);
   }
+
+  const onHide = () => {
+    setEventEditVal(false);
+    setEvent({name: "", date: "", body: ""});
+    setEventModal(false);
+};
+const toggleOpen = () => setEventModal(true);
+
+const upd_event = () => {
+  let data = pick(eventEdit, ["name", "date", "body"]);
+  update_event(event.id, data).then(() => onHide()); 
+}
+
+const handleEventEditSubmit = (e) => {
+  console.log(eventEdit);
+  const form = e.currentTarget;
+  e.preventDefault();
+  e.stopPropagation();
+
+  if(form.checkValidity() === true){
+    upd_event();
+  }
+
+  setEventEditVal(true);
+}
+
+const update = (field, ev) => {
+  let u1 = Object.assign({}, event);
+  u1[field] = ev.target.value;
+  setEvent(u1);
+}
 
   const populateComments = () => {
     return (
@@ -80,6 +120,17 @@ export default function EventView({ events, session }) {
           <Row>
             <Col>
               <h1>{event.name}</h1>
+              {
+                event.user.id === session.user_id ?
+                  <Button
+                    variant={"secondary"}
+                    onClick={toggleOpen}
+                  >
+                    Edit
+                  </Button>
+                :
+                  null
+              }
             </Col>
           </Row>
           <Row>
@@ -147,6 +198,33 @@ export default function EventView({ events, session }) {
                 </Table>
             </Col>
           </Row>
+          <Modal show={eventModal} onHide={onHide} centered>
+              <Modal.Header closeButton>
+                  Edit Event
+              </Modal.Header>
+              <Modal.Body>
+                  <Form noValidate validated={eventEditValidated} onSubmit={handleEventEditSubmit}>
+                    <Form.Group>
+                        <Form.Label>Event Name:</Form.Label>
+                        <Form.Control required type={"text"} placeholder={"Event Name"} value={eventEdit.name} onChange={(e) => update("name", e)}/>
+                    </Form.Group>
+                    <Form.Group className={"date-picker-group"}>
+                        <Form.Label>Event Date:</Form.Label>
+                        <Form.Control required type={"date"} value={eventEdit.date} onChange={(e) => update("date", e)}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Event Description:</Form.Label>
+                        <Form.Control required as={"textarea"} rows={3} value={eventEdit.body} onChange={(e) => update("body", e)}/>
+                    </Form.Group>
+                    <Button
+                        variant={"primary"}
+                        type={"submit"}
+                    >
+                        Submit
+                    </Button>
+                  </Form>
+              </Modal.Body>
+          </Modal>
         </>
       ) : <h1>Sorry, You either Don't have access or there was an error</h1>}
     </div>

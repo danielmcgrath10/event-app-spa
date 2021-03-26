@@ -29,10 +29,4 @@ defmodule EventApp.Users.User do
   def add_password_hash(cset, password) do
     change(cset, Argon2.add_hash(password))
   end
-
-  def validate_password(_x) do
-    # Password more than 8 chars.
-    # PW not in common directory
-    true
-  end
 end
