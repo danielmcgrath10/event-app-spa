@@ -44,10 +44,14 @@ export default function EventFeed({events, session}) {
         if(events){
             return(
                 events.map((event, index) => (
-                    <div className="card" key={index}>
+                    <div className="card feed-card" key={index}>
                         <div className="card-header">
-                        {console.log(event)}
-                            <h3>{event.name}</h3>
+                            {
+                                (event.user.id === session.user_id) || _.find(event.invites, ["email", session.email])?
+                                    <h3><a href={`/events/${event.id}`}>{event.name}</a></h3>
+                                :
+                                    <h3>{event.name}</h3>
+                            }
                         </div>
                         <div className="card-body">
                         <div className="row">

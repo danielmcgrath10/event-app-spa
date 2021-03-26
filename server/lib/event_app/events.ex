@@ -40,6 +40,7 @@ defmodule EventApp.Events do
   """
   def get_event!(id), do: Repo.get!(Event, id)
   |>Repo.preload(:invites)
+  |>Repo.preload(:comments)
   |>Repo.preload(:user)
 
   @doc """

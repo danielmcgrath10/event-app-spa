@@ -8,6 +8,7 @@ import Users from "./pages/users/users";
 import Login from "./pages/login/login";
 import { connect } from "react-redux";
 import UserView from "./pages/user/user";
+import EventView from "./pages/event/event";
 
 function App({ error, session, users, events }) {
   // Taken from the notes
@@ -40,6 +41,9 @@ function App({ error, session, users, events }) {
               </Route>
               <Route exact path={"/users"}>
                 <Users users={users}/>
+              </Route>
+              <Route exact path={"/events/:id"}>
+                <EventView events={events} session={session}/>
               </Route>
               <Route exact path={"/"}>
                 <Redirect to={"/home"} />

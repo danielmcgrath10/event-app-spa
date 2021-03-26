@@ -11,7 +11,13 @@ defmodule EventAppWeb.InviteController do
     render(conn, "index.json", invites: invites)
   end
 
-  def create(conn, %{"invite" => invite_params}) do
+  def create(conn, %{"invite" => invite_params, "session" => session}) do
+    invite_params=invite_params
+    |> Map.put(
+      "url",
+      "http://events.danny-mcgrath.com/events/#{invite_params["event_id"]}"
+    )
+
     with {:ok, %Invite{} = invite} <- Invites.create_invite(invite_params) do
       conn
       |> put_status(:created)
@@ -28,6 +34,20 @@ defmodule EventAppWeb.InviteController do
   def update(conn, %{"id" => id, "invite" => invite_params}) do
     invite = Invites.get_invite!(id)
 
+    with {:ok, %Invite{} = invite} <- Invites.update_invite(invite, invite_params) do
+      render(conn, "show.json", invite: invite)
+    end
+  end
+
+  def update(conn, %{"id" => id, "accept" => accept}) do
+    invite = Invites.get_invite!(id)
+    invite_params = %{
+      accept: accept,
+      url: invite.url,
+      email: invite.email,
+      event_id: invite.event_id,
+      user_id: invite.user_id
+    }
     with {:ok, %Invite{} = invite} <- Invites.update_invite(invite, invite_params) do
       render(conn, "show.json", invite: invite)
     end

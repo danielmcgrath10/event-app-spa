@@ -5,7 +5,7 @@ defmodule EventApp.Invites.Invite do
   schema "invites" do
     field :accept, :boolean, default: false
     field :email, :string
-    field :url, :string
+    field :url, :string, default: "https://helloworld.com"
     belongs_to :event, EventApp.Events.Event
     belongs_to :user, EventApp.Users.User
 

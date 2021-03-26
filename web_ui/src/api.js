@@ -38,6 +38,16 @@ async function api_patch(id, path, data) {
     return await text.json();
 }
 
+async function api_delete(path, id) {
+    let text = await fetch(
+        "http://localhost:4000/api/v1" + path + "/" + id,
+        {
+            method: "DELETE"
+        }
+    );
+    return await text;
+}
+
 // Inspired by the notes
 export const getUsers = async () => {
     api_get("/users").then((data) => store.dispatch({
@@ -90,6 +100,36 @@ export const create_event = async (data, session) => {
 export const update_user = async (id, data, session) => {
     api_patch(id, "/users",{"user": data, "session": session}).then(() => {
         getUsers();
+    })
+}
+
+export const add_comment = async (data) => {
+    api_post("/comments", {"comment": data}).then(() => {
+        get_events();
+    })
+}
+
+export const del_comment = async (id) => {
+    api_delete("/comments", id).then(() => {
+        get_events();
+    })
+}
+
+export const add_invite = async (data, session) => {
+    api_post("/invites", {"invite": data, "session": session}).then(() => {
+        get_events();
+    })
+}
+
+export const del_invite = async (id) => {
+    api_delete("/invites", id).then(() => {
+        get_events();
+    })
+}
+
+export const upd_invite = async (id, val) => {
+    api_patch(id, "/invites", {"accept": val}).then(() => {
+        get_events();
     })
 }
 

@@ -67,34 +67,28 @@ export default function UserView({users, session}){
                                 </Button>
                             </Col>
                             <Col>
-                                <Button
-                                    active={_.isEqual(session.id, user.id)}
-                                    onClick={toggleOn}
-                                >
-                                    Edit
-                                </Button>
-                            </Col>
-                        </Row>
-                        <br/>
-                        <br/>
-                        <Row>
-                            <Col>
                                 {
-                                    !_.isEmpty(users) ?
-                                        <h1>{user.name}</h1>
+                                    session.user_id === user.id ?
+                                        <Button
+                                            onClick={toggleOn}
+                                        >
+                                            Edit
+                                        </Button>
                                     :
                                         null
                                 }
                             </Col>
                         </Row>
+                        <br/>
+                        <br/>
                         <Row>
                             <Col>
-                                {
-                                    !_.isEmpty(users) ?
-                                    <h2>{user.email}</h2>
-                                :
-                                    null
-                                }
+                                <h1>{user.name}</h1>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <h2>{user.email}</h2>
                             </Col>
                         </Row>
                         <Modal show={userModal} onHide={onHide} centered>
