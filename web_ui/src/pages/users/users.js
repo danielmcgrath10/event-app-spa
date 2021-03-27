@@ -3,7 +3,6 @@ import { getUsers } from "../../api";
 
 export default function Users({users}){
     if(!users){
-        console.log(users)
         getUsers();
     }
 

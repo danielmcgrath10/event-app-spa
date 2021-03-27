@@ -18,7 +18,6 @@ export default function EventFeed({events, session}) {
     const toggleOpen = () => setModalOpen(true);
 
     const submitEvent = () => {
-        console.log("hello World");
         let data = pick(event, ["name", "date", "body"]);
         create_event(data, session).then(() => onHide());
     }

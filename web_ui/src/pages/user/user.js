@@ -24,7 +24,6 @@ export default function UserView({users, session}){
     }
 
     const editUser = () => {
-        console.log("made ot");
         let data = pick(userEdit, ["name", "email"]);
         update_user(user.id, data, session).then(() => onHide());
     }

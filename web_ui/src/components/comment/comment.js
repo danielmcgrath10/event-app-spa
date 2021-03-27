@@ -17,7 +17,6 @@ export default function Comment({event, session}) {
         let data = _.pick(comment, ["body"]);
         data["user_id"] = session.user_id;
         data["event_id"] = event.id;
-        console.log(data);
         add_comment(data).then(() => clearInput());
     }
 

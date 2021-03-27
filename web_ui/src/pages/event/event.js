@@ -31,7 +31,6 @@ export default function EventView({ events, session }) {
 
   const handleUpdateInvite = (val) => {
     let invite_id = _.find(event.invites, ["email", session.email])["id"];
-    console.log(invite_id, val)
     upd_invite(invite_id, val);
   }
 
@@ -48,7 +47,6 @@ const upd_event = () => {
 }
 
 const handleEventEditSubmit = (e) => {
-  console.log(eventEdit);
   const form = e.currentTarget;
   e.preventDefault();
   e.stopPropagation();

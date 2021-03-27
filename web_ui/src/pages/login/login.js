@@ -24,7 +24,6 @@ function Login(props) {
   }
 
   const handleLoginSubmit = (e) => {
-    console.log(e);
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.preventDefault();
@@ -44,12 +43,10 @@ function Login(props) {
   }
 
   const handleCreateSubmit = (e) => {
-    console.log(e);
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
-      console.log("hello world")
     } else {
       e.preventDefault();
       e.stopPropagation();
