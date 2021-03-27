@@ -2,8 +2,7 @@ import _, { pick } from "lodash";
 import "./event-feed.scss";
 import React, { useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import { create_event, get_events } from "../../api";
-import "react-datepicker/dist/react-datepicker.css";
+import { create_event } from "../../api";
 
 export default function EventFeed({events, session}) {
     const [modalOpen, setModalOpen] = useState(false);
