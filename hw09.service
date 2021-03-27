@@ -11,8 +11,8 @@ Environment=PORT=4794
 Environment=PROD=true
 Environment=LANG=en_US.UTF-8
 
-WorkingDirectory=/home/events-spa/EventApp
-ExecStart=/bin/bash /home/events-spa/EventApp/start.sh
+WorkingDirectory=/home/events-spa/server
+ExecStart=/bin/bash /home/events-spa/server/start.sh
 
 [Install]
 WantedBy=multi-user.target
