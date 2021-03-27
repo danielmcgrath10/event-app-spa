@@ -3,7 +3,7 @@ import store from "./store";
 import _ from "lodash";
 
 async function api_get(path) {
-  let text = await fetch("http://localhost:4000/api/v1" + path, {});
+  let text = await fetch("http://events-spa.danny-mcgrath.com/api/v1" + path, {});
   let res = await text.json();
   return res.data;
 }
@@ -16,7 +16,7 @@ async function api_post(path, data) {
     },
     body: JSON.stringify(data),
   };
-  let text = await fetch("http://localhost:4000/api/v1" + path, opts);
+  let text = await fetch("http://events-spa.danny-mcgrath.com/api/v1" + path, opts);
   return await text.json();
 }
 
@@ -30,14 +30,14 @@ async function api_patch(id, path, data) {
   };
   console.log(opts);
   let text = await fetch(
-    "http://localhost:4000/api/v1" + path + "/" + id,
+    "http://events-spa.danny-mcgrath.com/api/v1" + path + "/" + id,
     opts
   );
   return await text.json();
 }
 
 async function api_delete(path, id) {
-  let text = await fetch("http://localhost:4000/api/v1" + path + "/" + id, {
+  let text = await fetch("http://events-spa.danny-mcgrath.com/api/v1" + path + "/" + id, {
     method: "DELETE",
   });
   return await text;
