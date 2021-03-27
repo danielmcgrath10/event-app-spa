@@ -18,8 +18,9 @@ http://events-spa.danny-mcgrath.com
 
 4. Is your app functionality complete? If not, what's missing?
 
-I believe so, Unless listing the comments and invites is necessary
-I have all of the core functionality.
+I believe so, unless listing the comments and invites is necessary
+I have all of the core functionality. I am not sure I can delete
+users either.
 
 5. Is your app properly deployed? If not, what went wrong?
 
