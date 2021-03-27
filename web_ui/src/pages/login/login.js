@@ -40,9 +40,7 @@ function Login(props) {
 
   const createApi = () => {
     let data = pick(user, ["name", "email", "password"]);
-    create_user(data).then(() => {
-      loginApi(data.email, data.password);
-    })
+    create_user(data);
   }
 
   const handleCreateSubmit = (e) => {

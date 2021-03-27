@@ -1,5 +1,6 @@
 // Taken from the Class notes
 import store from "./store";
+import _ from "lodash";
 
 async function api_get(path) {
     let text = await fetch("http://localhost:4000/api/v1" + path, {});
@@ -50,15 +51,19 @@ async function api_delete(path, id) {
 
 // Inspired by the notes
 export const getUsers = async () => {
-    api_get("/users").then((data) => store.dispatch({
+    await api_get("/users").then((data) => store.dispatch({
         type: "users/set",
         data: data
     }))
 }
 
 export const create_user = async (data) => {
-    api_post("/users", {"user": data}).then((data) => {
-        console.log("new user", data);
+    api_post("/users", {"user": data}).then((res) => {
+        if(_.has(res, "error")){
+            console.log(res.error);
+        } else {
+            api_login(data.email, data.password);
+        }
     })
 }
 

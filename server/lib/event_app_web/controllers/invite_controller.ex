@@ -15,7 +15,7 @@ defmodule EventAppWeb.InviteController do
     invite_params=invite_params
     |> Map.put(
       "url",
-      "http://events.danny-mcgrath.com/events/#{invite_params["event_id"]}"
+      "http://events-spa.danny-mcgrath.com/events/#{invite_params["event_id"]}"
     )
 
     with {:ok, %Invite{} = invite} <- Invites.create_invite(invite_params) do

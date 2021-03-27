@@ -33,6 +33,11 @@ function save_session(sess) {
     localStorage.setItem("session", JSON.stringify(session));
 }
 
+function stop_session(sess){
+    let session = Object.assign({}, sess, {time: Date.now()});
+    localStorage.removeItem("session");
+}
+
 function restore_session() {
     let session = localStorage.getItem("session");
     if(!session) {
@@ -55,7 +60,8 @@ function session(state=restore_session(), action){
             save_session(action.data);
           return action.data;
         case 'session/clear':
-          return null;
+            stop_session(action.data);
+            return null;
         default:
           return state;
       }
