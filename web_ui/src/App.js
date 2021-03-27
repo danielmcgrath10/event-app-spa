@@ -1,3 +1,4 @@
+// Inspired by the class notes
 import React, { Suspense } from "react";
 import "./App.scss";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -28,27 +29,29 @@ function App({ error, session, users, events }) {
         <>
           <Navbar session={session} />
           {error_row}
-            <Switch>
-              {/* <Route
+          <Switch>
+            {/* <Route
                   path={'/login'}
                 /> */}
-              <Route
-                path={"/home"}
-                render={(props) => <EventFeed events={events} session={session}/>}
-              />
-              <Route exact path={"/users/:id"}>
-                <UserView users={users} session={session}/>
-              </Route>
-              <Route exact path={"/users"}>
-                <Users users={users}/>
-              </Route>
-              <Route exact path={"/events/:id"}>
-                <EventView events={events} session={session}/>
-              </Route>
-              <Route exact path={"/"}>
-                <Redirect to={"/home"} />
-              </Route>
-            </Switch>
+            <Route
+              path={"/home"}
+              render={(props) => (
+                <EventFeed events={events} session={session} />
+              )}
+            />
+            <Route exact path={"/users/:id"}>
+              <UserView users={users} session={session} />
+            </Route>
+            <Route exact path={"/users"}>
+              <Users users={users} />
+            </Route>
+            <Route exact path={"/events/:id"}>
+              <EventView events={events} session={session} />
+            </Route>
+            <Route exact path={"/"}>
+              <Redirect to={"/home"} />
+            </Route>
+          </Switch>
         </>
       ) : (
         <Login />
@@ -57,4 +60,9 @@ function App({ error, session, users, events }) {
   );
 }
 
-export default connect(({ error, session, users, events }) => ({ error, session, users, events }))(App);
+export default connect(({ error, session, users, events }) => ({
+  error,
+  session,
+  users,
+  events,
+}))(App);

@@ -3,25 +3,25 @@ import React, { useState } from "react";
 import "./login.scss";
 import { Button, Form } from "react-bootstrap";
 import pick from "lodash/pick";
-import {connect} from "react-redux";
-import {api_login, create_user, getUsers, get_events} from "../../api";
+import { connect } from "react-redux";
+import { api_login, create_user, getUsers, get_events } from "../../api";
 
 function Login(props) {
   const [create, setCreate] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [user, setUser] = useState({name: "", email: "", password: ""});
+  const [user, setUser] = useState({ name: "", email: "", password: "" });
 
   const update = (field, ev) => {
     let u1 = Object.assign({}, user);
     u1[field] = ev.target.value;
     setUser(u1);
-  }
+  };
 
   const loginApi = (email, password) => {
     api_login(email, password);
     get_events();
     getUsers();
-  }
+  };
 
   const handleLoginSubmit = (e) => {
     const form = e.currentTarget;
@@ -31,7 +31,7 @@ function Login(props) {
     } else {
       e.preventDefault();
       e.stopPropagation();
-      let data = pick(user, ['email', 'password'])
+      let data = pick(user, ["email", "password"]);
       loginApi(data.email, data.password);
     }
     setValidated(true);
@@ -40,7 +40,7 @@ function Login(props) {
   const createApi = () => {
     let data = pick(user, ["name", "email", "password"]);
     create_user(data);
-  }
+  };
 
   const handleCreateSubmit = (e) => {
     const form = e.currentTarget;
@@ -56,10 +56,10 @@ function Login(props) {
   };
 
   const changePage = () => {
-      setCreate(!create);
-      setValidated(false);
-      setUser({name: "", email: "", password: ""});
-  }
+    setCreate(!create);
+    setValidated(false);
+    setUser({ name: "", email: "", password: "" });
+  };
 
   return (
     <div id="login">
@@ -68,30 +68,30 @@ function Login(props) {
           <Form noValidate validated={validated} onSubmit={handleCreateSubmit}>
             <Form.Group controlId={"formBasicText"}>
               <Form.Label>Name</Form.Label>
-              <Form.Control 
-                required 
-                type="text" 
-                placeholder="Enter Name" 
+              <Form.Control
+                required
+                type="text"
+                placeholder="Enter Name"
                 value={user.name}
                 onChange={(ev) => update("name", ev)}
               />
             </Form.Group>
             <Form.Group controlId={"formBasicEmail"}>
               <Form.Label>Email</Form.Label>
-              <Form.Control 
-                required 
-                type="email" 
-                placeholder="Enter Email" 
+              <Form.Control
+                required
+                type="email"
+                placeholder="Enter Email"
                 value={user.email}
                 onChange={(ev) => update("email", ev)}
               />
             </Form.Group>
             <Form.Group>
               <Form.Label>Password</Form.Label>
-              <Form.Control 
-                required 
-                type="password" 
-                placeholder="Password" 
+              <Form.Control
+                required
+                type="password"
+                placeholder="Password"
                 value={user.password}
                 onChange={(ev) => update("password", ev)}
               />
@@ -109,20 +109,20 @@ function Login(props) {
           <Form noValidate validated={validated} onSubmit={handleLoginSubmit}>
             <Form.Group controlId={"formBasicEmail"}>
               <Form.Label>Email</Form.Label>
-              <Form.Control 
-                required 
-                type="email" 
-                placeholder="Enter Email" 
+              <Form.Control
+                required
+                type="email"
+                placeholder="Enter Email"
                 value={user.email}
                 onChange={(ev) => update("email", ev)}
               />
             </Form.Group>
             <Form.Group>
               <Form.Label>Password</Form.Label>
-              <Form.Control 
-                required 
-                type="password" 
-                placeholder="Password" 
+              <Form.Control
+                required
+                type="password"
+                placeholder="Password"
                 value={user.password}
                 onChange={(ev) => update("password", ev)}
               />
@@ -144,4 +144,4 @@ function state2props() {
   return {};
 }
 
-export default connect(state2props)(Login)
+export default connect(state2props)(Login);

@@ -1,126 +1,118 @@
+// Inspired by the class notes
 import _, { pick } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import {useHistory, useParams} from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { getUsers, update_user } from "../../api";
 
-export default function UserView({users, session}){
-    let {id} = useParams();
-    let user = _.find(users, ["id", _.toNumber(id)]);
-    const history = useHistory();
-    const [userModal, setUserModal] = useState(false);
-    const [userEdit, setUser] = useState({name: "", email: ""})
-    const [userEditValidated, setValidated] = useState(false);
+export default function UserView({ users, session }) {
+  let { id } = useParams();
+  let user = _.find(users, ["id", _.toNumber(id)]);
+  const history = useHistory();
+  const [userModal, setUserModal] = useState(false);
+  const [userEdit, setUser] = useState({ name: "", email: "" });
+  const [userEditValidated, setValidated] = useState(false);
 
-    useEffect(() => {
-        if(user) {
-            setUser({name: user.name , email:user.email})
-        }
-    }, [user])
+  useEffect(() => {
+    if (user) {
+      setUser({ name: user.name, email: user.email });
+    }
+  }, [user]);
 
-    const onHide = () => {
-        setValidated(false);
-        setUserModal(false);
+  const onHide = () => {
+    setValidated(false);
+    setUserModal(false);
+  };
+
+  const editUser = () => {
+    let data = pick(userEdit, ["name", "email"]);
+    update_user(user.id, data, session).then(() => onHide());
+  };
+
+  const handleUserEditSubmit = (e) => {
+    const form = e.currentTarget;
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (form.checkValidity() === true) {
+      editUser();
     }
 
-    const editUser = () => {
-        let data = pick(userEdit, ["name", "email"]);
-        update_user(user.id, data, session).then(() => onHide());
+    setValidated(true);
+  };
+
+  const update = (field, ev) => {
+    let u1 = Object.assign({}, userEdit);
+    if (ev === "date") {
+      u1[field] = ev;
+    } else {
+      u1[field] = ev.target.value;
     }
+    setUser(u1);
+  };
 
-    const handleUserEditSubmit = (e) =>{
-        const form =  e.currentTarget;
-        e.stopPropagation();
-        e.preventDefault();
+  const toggleOn = () => setUserModal(true);
 
-        if(form.checkValidity() === true){
-            editUser();
-        }
-
-        setValidated(true);
-    }
-
-    const update = (field, ev) => {
-        let u1 = Object.assign({}, userEdit);
-        if(ev === "date") {
-            u1[field] = ev;
-        } else {
-            u1[field] = ev.target.value;
-        }
-        setUser(u1);
-    }
-
-    const toggleOn = () => setUserModal(true);
-
-    return(
+  return (
+    <>
+      {user ? (
         <>
-            {
-                user ? 
-                    <>
-                        <Row>
-                            <Col>
-                                <Button
-                                    onClick={() => history.goBack()}
-                                >
-                                    Back
-                                </Button>
-                            </Col>
-                            <Col>
-                                {
-                                    session.user_id === user.id ?
-                                        <Button
-                                            onClick={toggleOn}
-                                        >
-                                            Edit
-                                        </Button>
-                                    :
-                                        null
-                                }
-                            </Col>
-                        </Row>
-                        <br/>
-                        <br/>
-                        <Row>
-                            <Col>
-                                <h1>{user.name}</h1>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <h2>{user.email}</h2>
-                            </Col>
-                        </Row>
-                        <Modal show={userModal} onHide={onHide} centered>
-                            <Modal.Header closeButton>
-                                Edit User
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Form noValidate validated={userEditValidated} onSubmit={handleUserEditSubmit}>
-                                    <Form.Group>
-                                        <Form.Label>
-                                            Name
-                                        </Form.Label>
-                                        <Form.Control required type={"text"} value={userEdit.name} onChange={(e)=>update("name", e)} />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <Form.Label>
-                                            Email
-                                        </Form.Label>
-                                        <Form.Control required type={"text"} value={userEdit.email} onChange={(e)=>update("email", e)} />
-                                    </Form.Group>
-                                    <Button
-                                        variant={"primary"}
-                                        type={"submit"}
-                                    >
-                                        Submit
-                                    </Button>
-                                </Form>
-                            </Modal.Body>
-                        </Modal>
-                    </>
-                :
-                    null
-            }
+          <Row>
+            <Col>
+              <Button onClick={() => history.goBack()}>Back</Button>
+            </Col>
+            <Col>
+              {session.user_id === user.id ? (
+                <Button onClick={toggleOn}>Edit</Button>
+              ) : null}
+            </Col>
+          </Row>
+          <br />
+          <br />
+          <Row>
+            <Col>
+              <h1>{user.name}</h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <h2>{user.email}</h2>
+            </Col>
+          </Row>
+          <Modal show={userModal} onHide={onHide} centered>
+            <Modal.Header closeButton>Edit User</Modal.Header>
+            <Modal.Body>
+              <Form
+                noValidate
+                validated={userEditValidated}
+                onSubmit={handleUserEditSubmit}
+              >
+                <Form.Group>
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    required
+                    type={"text"}
+                    value={userEdit.name}
+                    onChange={(e) => update("name", e)}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    required
+                    type={"text"}
+                    value={userEdit.email}
+                    onChange={(e) => update("email", e)}
+                  />
+                </Form.Group>
+                <Button variant={"primary"} type={"submit"}>
+                  Submit
+                </Button>
+              </Form>
+            </Modal.Body>
+          </Modal>
         </>
-    );
-}   
+      ) : null}
+    </>
+  );
+}
